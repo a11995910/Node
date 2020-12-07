@@ -27,6 +27,7 @@ app.use(views(__dirname + '/views', {
   // extension: 'pug'
   extension: 'html'
 }))
+console.log(__dirname)
 
 // logger
 app.use(async (ctx, next) => {
