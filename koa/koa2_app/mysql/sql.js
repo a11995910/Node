@@ -49,8 +49,8 @@ let allServices = {
     },
     yesterdaySellDate:function(){
         let _sql = `SELECT
-        CONCAT(FROM_UNIXTIME( pay_time, '%H'),'-',(FROM_UNIXTIME( pay_time+3600, '%H') )) AS '时间',
-        sum( total_price ) AS '销售额' 
+        CONCAT(FROM_UNIXTIME( pay_time, '%H'),'-',(FROM_UNIXTIME( pay_time+3600, '%H') )) AS 'time',
+        sum( total_price ) AS 'sellmoney' 
        FROM
         ims_store_order_small 
        WHERE
