@@ -574,6 +574,7 @@ function nowdayandyesday(){
             return item.sellmoney
         })
         return data
+        
     })
     let yets = requist('echarts2').then(function(res){
         let data = res.map((item,index) => {
