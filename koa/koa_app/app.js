@@ -8,12 +8,13 @@ const logger = require('koa-logger')
 
 //路由引入
 const index = require('./routes/index')
+const login = require('./routes/login')
 const users = require('./routes/users')
 
 // error handler
 onerror(app)
 
-// middlewares
+// 中间件
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))
@@ -21,12 +22,12 @@ app.use(json())
 app.use(logger())
 
 // 静态资源路径
-app.use(require('koa-static')(__dirname + '/views'))
+app.use(require('koa-static')(__dirname + '/public'))
 
 // 前端路径与模板语法
 app.use(views(__dirname + '/views', {
-  // extension: 'pug'
   extension: 'html'
+  // extension: 'pug'
 }))
 
 // logger
@@ -38,6 +39,8 @@ app.use(async (ctx, next) => {
 })
 
 // routes
+//传递路由文件至此，添加至中间件
+app.use(login.routes(), login.allowedMethods())
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 
