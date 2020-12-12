@@ -4,7 +4,7 @@
 $(function () {
     echarts_1();
     echarts_2();
-    echarts_3();
+    nowdayandyesday();
     echarts_4();
     echarts_5();
     zb1();
@@ -158,153 +158,7 @@ $(function () {
             myChart.resize();
         });
     }
-    // 当日销售数据
-    function echarts_3() {
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('echart3'));
-        $.ajax({
-            url: '/echarts1',
-            type: 'get',
-            dataType: 'json',
-            success: function (res) {
-                let data = res.map((item,index) => {
-                    return item.sellmoney
-                })
-                option = {
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            lineStyle: {
-                                color: '#57617B'
-                            }
-                        }
-                    },
-                    legend: {
-                        data: ['线下', '线上小程序'],
-                        top: '0',
-                        textStyle: {
-                            color: "#fff"
-                        },
-                        itemGap: 20,
-                    },
-                    grid: {
-                        left: '0',
-                        right: '20',
-                        top: '10',
-                        bottom: '20',
-                        containLabel: true
-                    },
-                    xAxis: [{
-                        type: 'category',
-                        boundaryGap: false,
-                        axisLabel: {
-                            show: true,
-                            textStyle: {
-                                color: 'rgba(255,255,255,.6)'
-                            }
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: 'rgba(255,255,255,.1)'
-                            }
-                        },
-                        data: ['1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00']
-                    }, {}],
-                    yAxis: [{
-                        axisLabel: {
-                            show: true,
-                            textStyle: {
-                                color: 'rgba(255,255,255,.6)'
-                            }
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: 'rgba(255,255,255,.1)'
-                            }
-                        },
-                        splitLine: {
-                            lineStyle: {
-                                color: 'rgba(255,255,255,.1)'
-                            }
-                        }
-                    }],
-                    series: [
-                        {
-                        name: '线下',
-                        type: 'line',
-                        smooth: true,
-                        symbol: 'circle',
-                        symbolSize: 5,
-                        showSymbol: false,
-                        lineStyle: {
-                            normal: {
-                                width: 2
-                            }
-                        },
-                        areaStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                    offset: 0,
-                                    color: 'rgba(24, 163, 64, 0.3)'
-                                }, {
-                                    offset: 0.8,
-                                    color: 'rgba(24, 163, 64, 0)'
-                                }], false),
-                                shadowColor: 'rgba(0, 0, 0, 0.1)',
-                                shadowBlur: 10
-                            }
-                        },
-                        itemStyle: {
-                            normal: {
-                                color: '#cdba00',
-                                borderColor: 'rgba(137,189,2,0.27)',
-                                borderWidth: 12
-                            }
-                        },
-                        data: [220, 182, 191, 134, 150, 120, 110, 125, 145, 122, 165, 122]
-                    }, {
-                        name: '线上小程序',
-                        type: 'line',
-                        smooth: true,
-                        symbol: 'circle',
-                        symbolSize: 5,
-                        showSymbol: false,
-                        lineStyle: {
-                            normal: {
-                                width: 2
-                            }
-                        },
-                        areaStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                    offset: 0,
-                                    color: 'rgba(39, 122,206, 0.3)'
-                                }, {
-                                    offset: 0.8,
-                                    color: 'rgba(39, 122,206, 0)'
-                                }], false),
-                                shadowColor: 'rgba(0, 0, 0, 0.1)',
-                                shadowBlur: 10
-                            }
-                        },
-                        itemStyle: {
-                            normal: {
-                                color: '#277ace',
-                                borderColor: 'rgba(0,136,212,0.2)',
-                                borderWidth: 12
-                            }
-                        },
-                        data: data
-                    }]
-                };
-                // 使用刚指定的配置项和数据显示图表。
-                myChart.setOption(option);
-                window.addEventListener("resize", function () {
-                    myChart.resize();
-                });
-            }
-        })
-    }
+    
     function echarts_4() {
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('echart4'));
@@ -713,6 +567,176 @@ $(function () {
         });
     }
 })
+
+function nowdayandyesday(){
+    let nows = requist('echarts1').then(function(res){
+        let data = res.map((item,index) => {
+            return item.sellmoney
+        })
+        return data
+        
+    })
+    let yets = requist('echarts2').then(function(res){
+        let data = res.map((item,index) => {
+            return item.sellmoney
+        })
+        return data
+    })
+    Promise.all([nows, yets]).then((result) => {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart3'));
+        
+        option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    lineStyle: {
+                        color: '#57617B'
+                    }
+                }
+            },
+            legend: {
+                data: ['昨日', '今日'],
+                top: '0',
+                textStyle: {
+                    color: "#fff"
+                },
+                itemGap: 20,
+            },
+            grid: {
+                left: '0',
+                right: '20',
+                top: '10',
+                bottom: '20',
+                containLabel: true
+            },
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: 'rgba(255,255,255,.6)'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: 'rgba(255,255,255,.1)'
+                    }
+                },
+                data: ['1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00','13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00']
+            }, {}],
+            yAxis: [{
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: 'rgba(255,255,255,.6)'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: 'rgba(255,255,255,.1)'
+                    }
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: 'rgba(255,255,255,.1)'
+                    }
+                }
+            }],
+            series: [
+                {
+                name: '昨日',
+                type: 'line',
+                smooth: true,
+                symbol: 'circle',
+                symbolSize: 5,
+                showSymbol: false,
+                lineStyle: {
+                    normal: {
+                        width: 2
+                    }
+                },
+                areaStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: 'rgba(24, 163, 64, 0.3)'
+                        }, {
+                            offset: 0.8,
+                            color: 'rgba(24, 163, 64, 0)'
+                        }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                        shadowBlur: 10
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#cdba00',
+                        borderColor: 'rgba(137,189,2,0.27)',
+                        borderWidth: 12
+                    }
+                },
+                data: result[1]
+            }, {
+                name: '今日',
+                type: 'line',
+                smooth: true,
+                symbol: 'circle',
+                symbolSize: 5,
+                showSymbol: false,
+                lineStyle: {
+                    normal: {
+                        width: 2
+                    }
+                },
+                areaStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: 'rgba(39, 122,206, 0.3)'
+                        }, {
+                            offset: 0.8,
+                            color: 'rgba(39, 122,206, 0)'
+                        }], false),
+                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                        shadowBlur: 10
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#277ace',
+                        borderColor: 'rgba(0,136,212,0.2)',
+                        borderWidth: 12
+                    }
+                },
+                data: result[0]
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+    })
+}
+function requist(urlname){
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/'+urlname,
+            type: 'get',
+            dataType: 'json',
+            success: function (res) {
+                resolve(res)
+            },
+            fail:(err)=>{
+                reject(err)
+            }
+        })
+        })
+
+    
+}
 
 
 

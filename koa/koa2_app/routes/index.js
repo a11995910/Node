@@ -18,8 +18,11 @@ router.get('/json', async (ctx, next) => {
 
 router.get('/echarts1', async (ctx, next) => {
   let data = null;
-
   ctx.body = await selldata.nowDaySellData()
+})
+router.get('/echarts2', async (ctx, next) => {
+  let data = null;
+  ctx.body = await selldata.yesterdaySellDate()
 })
 
 module.exports = router
