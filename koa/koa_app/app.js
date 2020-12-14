@@ -40,7 +40,7 @@ app.use(async (ctx, next) => {
 
 // routes
 //传递路由文件至此，添加至中间件
-app.use(login.routes(), login.allowedMethods())
+app.use(login.routes(), login.allowedMethods()) //allowedMethods 配置响应头
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 
