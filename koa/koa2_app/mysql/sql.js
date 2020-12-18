@@ -18,7 +18,6 @@ let allServices = {
                     reject(err)
                 } else {
                     connection.query(sql, values, (err, rows) => {
-
                         if (err) {
                             reject(err)
                         } else {
@@ -31,6 +30,7 @@ let allServices = {
         })
 
     },
+    //今日销售数据
    nowDaySellData: function () {
         let _sql = `SELECT
         CONCAT(FROM_UNIXTIME( pay_time, '%H'),'-',(FROM_UNIXTIME( pay_time+3600, '%H') )) AS 'time',
@@ -47,6 +47,7 @@ let allServices = {
         (FROM_UNIXTIME( pay_time, '%H'));`
         return allServices.query(_sql)
     },
+    //昨日销售数据
     yesterdaySellDate:function(){
         let _sql = `SELECT
         CONCAT(FROM_UNIXTIME( pay_time, '%H'),'-',(FROM_UNIXTIME( pay_time+3600, '%H') )) AS 'time',
@@ -63,7 +64,88 @@ let allServices = {
        GROUP BY
         (FROM_UNIXTIME( pay_time, '%H'));`
         return allServices.query(_sql)
+    },
+    //总品类销售数据
+    allKindsDate:function(){
+        let _sql = `SELECT
+        CASE
+          type_id 
+                WHEN '345' THEN
+                '奥莱' 
+                WHEN '62' THEN
+                '电子产品' 
+                WHEN '124' THEN
+                'B2潮流精选' 
+                WHEN '27' THEN
+                '化妆品' 
+                WHEN '60' THEN
+                '奢侈品' ELSE '百货' 
+            END AS 'name',
+         sum( total_price )  '销售额',
+         sum( pay_price )  '实付金额',
+         count(s_id)  '笔数',
+         ROUND(sum( coupon_price ))  '用券金额'
+        FROM
+         ims_store_order_small 
+        WHERE
+         paid = 1 AND STATUS >= 0 
+         AND is_del = 0 
+         AND refund_status = 0 
+        GROUP BY
+         name
+        ORDER BY sum( total_price ) desc`
+        return allServices.query(_sql)
+    },
+    //今日品类销售数据
+    nowdayKindsDate:function(){
+        let _sql = `SELECT
+        CASE
+          type_id 
+                WHEN '345' THEN
+                '奥莱' 
+                WHEN '62' THEN
+                '电子产品' 
+                WHEN '124' THEN
+                'B2潮流精选' 
+                WHEN '27' THEN
+                '化妆品' 
+                WHEN '60' THEN
+                '奢侈品' ELSE '百货' 
+            END AS 'name',
+         sum( total_price )  '销售额',
+         sum( pay_price )  '实付金额',
+         count(s_id)  '笔数',
+         ROUND(sum( coupon_price ))  '用券金额'
+        FROM
+         ims_store_order_small 
+        WHERE
+         paid = 1 AND STATUS >= 0 
+         AND is_del = 0 
+         AND refund_status = 0 
+         and from_unixtime(pay_time,'%Y%m%d')=${new Date().toLocaleDateString()}
+        GROUP BY
+         name
+        ORDER BY sum( total_price ) desc`
+        return allServices.query(_sql)
+    },
+    //今年各个月份销售数据
+    verbmonth:function(){
+        let _sql = `SELECT left(from_unixtime(pay_time),7) AS '日期',
+        sum(total_price) AS '销售额',
+       sum(pay_price) AS '实付金额',
+       count(s_id) AS '购买笔数',
+       sum(coupon_price)/100 AS '用券笔数',
+       count(DISTINCT uid) AS '购买人数'
+ FROM ims_store_order_small
+ WHERE 
+    paid = 1
+   AND status >= 0
+   AND is_del = 0
+   AND refund_status = 0
+   and pay_time <> ''
+   and left(from_unixtime(pay_time),4) = ${new Date().getFullYear()}
+ GROUP BY left(from_unixtime(pay_time),7)`;
+        return allServices.query(_sql)
     }
 }
-
 module.exports = allServices;

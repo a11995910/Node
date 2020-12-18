@@ -5,7 +5,9 @@ $(function () {
     echarts_1();
     echarts_2();
     nowdayandyesday();
-    echarts_4();
+    allkinds();
+    verbmonth();
+    
     echarts_5();
     zb1();
     zb2();
@@ -79,216 +81,12 @@ $(function () {
         });
     }
     function echarts_2() {
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('echart2'));
+        
 
-        option = {
-            tooltip: {
-                trigger: 'item',
-                formatter: "{b} : {c} ({d}%)"
-            },
-            legend: {
-
-                top: '15%',
-                data: ['图例1', '图例2', '图例3', '图例4', '图例5'],
-                icon: 'circle',
-                textStyle: {
-                    color: 'rgba(255,255,255,.6)',
-                }
-            },
-            calculable: true,
-            series: [{
-                name: '',
-                color: ['#62c98d', '#2f89cf', '#4cb9cf', '#53b666', '#62c98d', '#205acf', '#c9c862', '#c98b62', '#c962b9', '#c96262'],
-                type: 'pie',
-                //起始角度，支持范围[0, 360]
-                startAngle: 0,
-                //饼图的半径，数组的第一项是内半径，第二项是外半径
-                radius: [51, 100],
-                //支持设置成百分比，设置成百分比时第一项是相对于容器宽度，第二项是相对于容器高度
-                center: ['50%', '45%'],
-
-                //是否展示成南丁格尔图，通过半径区分数据大小。可选择两种模式：
-                // 'radius' 面积展现数据的百分比，半径展现数据的大小。
-                //  'area' 所有扇区面积相同，仅通过半径展现数据大小
-                roseType: 'area',
-                //是否启用防止标签重叠策略，默认开启，圆环图这个例子中需要强制所有标签放在中心位置，可以将该值设为 false。
-                avoidLabelOverlap: false,
-                label: {
-                    normal: {
-                        show: true,
-                        //  formatter: '{c}辆'
-                    },
-                    emphasis: {
-                        show: true
-                    }
-                },
-                labelLine: {
-                    normal: {
-                        show: true,
-                        length2: 1,
-                    },
-                    emphasis: {
-                        show: true
-                    }
-                },
-                data: [
-                    { value: 1, name: '图例1', },
-                    { value: 4, name: '图例2', },
-                    { value: 5, name: '图例3', },
-                    { value: 6, name: '图例4', },
-                    { value: 9, name: '图例5', },
-
-
-
-                    { value: 0, name: "", label: { show: false }, labelLine: { show: false } },
-                    { value: 0, name: "", label: { show: false }, labelLine: { show: false } },
-                    { value: 0, name: "", label: { show: false }, labelLine: { show: false } },
-                    { value: 0, name: "", label: { show: false }, labelLine: { show: false } },
-                    { value: 0, name: "", label: { show: false }, labelLine: { show: false } },
-
-
-                ]
-            }]
-        };
-
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-        window.addEventListener("resize", function () {
-            myChart.resize();
-        });
+        
     }
     
-    function echarts_4() {
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('echart4'));
-        option = {
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    lineStyle: {
-                        color: '#57617B'
-                    }
-                }
-            },
-            "legend": {
-
-                "data": [
-                    { "name": "线下" },
-                    { "name": "线上小程序" }
-                ],
-                "top": "0%",
-                "textStyle": {
-                    "color": "rgba(255,255,255,0.9)"//图例文字
-                }
-            },
-
-            "xAxis": [
-                {
-                    "type": "category",
-
-                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-                    axisLine: { lineStyle: { color: "rgba(255,255,255,.1)" } },
-                    axisLabel: {
-                        textStyle: { color: "rgba(255,255,255,.6)", fontSize: '14', },
-                    },
-
-                },
-            ],
-            "yAxis": [
-                {
-                    "type": "value",
-                    "name": "销售额（w）",
-                    "min": 0,
-                    "max": 50,
-                    "interval": 10,
-                    "axisLabel": {
-                        "show": true,
-
-                    },
-                    axisLine: { lineStyle: { color: 'rgba(255,255,255,.4)' } },//左线色
-
-                }
-            ],
-            "grid": {
-                "top": "10%",
-                "right": "30",
-                "bottom": "30",
-                "left": "30",
-            },
-            "series": [
-                {
-                    "name": "线下",
-
-                    "type": "bar",
-                    "data": [4, 6, 36, 6, 8, 6, 4, 6, 30, 6, 8, 12],
-                    "barWidth": "auto",
-                    "itemStyle": {
-                        "normal": {
-                            "color": {
-                                "type": "linear",
-                                "x": 0,
-                                "y": 0,
-                                "x2": 0,
-                                "y2": 1,
-                                "colorStops": [
-                                    {
-                                        "offset": 0,
-                                        "color": "#609db8"
-                                    },
-
-                                    {
-                                        "offset": 1,
-                                        "color": "#609db8"
-                                    }
-                                ],
-                                "globalCoord": false
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "线上小程序",
-                    "type": "bar",
-                    "data": [
-                        4, 2, 34, 6, 8, 6, 4, 2, 32, 6, 8, 18
-                    ],
-                    "barWidth": "auto",
-
-                    "itemStyle": {
-                        "normal": {
-                            "color": {
-                                "type": "linear",
-                                "x": 0,
-                                "y": 0,
-                                "x2": 0,
-                                "y2": 1,
-                                "colorStops": [
-                                    {
-                                        "offset": 0,
-                                        "color": "#66b8a7"
-                                    },
-                                    {
-                                        "offset": 1,
-                                        "color": "#66b8a7"
-                                    }
-                                ],
-                                "globalCoord": false
-                            }
-                        }
-                    },
-                    "barGap": "0"
-                }
-            ]
-        };
-
-
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-        window.addEventListener("resize", function () {
-            myChart.resize();
-        });
-    }
+    
 
     function echarts_5() {
         // 基于准备好的dom，初始化echarts实例
@@ -567,25 +365,45 @@ $(function () {
         });
     }
 })
-
+//今日和昨日数据
 function nowdayandyesday(){
     let nows = requist('echarts1').then(function(res){
-        let data = res.map((item,index) => {
-            return item.sellmoney
-        })
+        var data = [];
+        var value = 0;
+        for(let i=0;i<res.length;i++){
+            if(res[i].time.slice(0,2)==(i+value)){
+                data.push(res[i].sellmoney)
+            }else{
+                var addlength = res[i].time.slice(0,2) - (i+value);
+                for(let i=0;i<addlength;i++){
+                    data.push(0);
+                }
+                value = addlength+value
+                data.push(res[i].sellmoney)
+            }
+        }
         return data
-        
     })
     let yets = requist('echarts2').then(function(res){
-        let data = res.map((item,index) => {
-            return item.sellmoney
-        })
+        var data = [];
+        var value = 0;
+        for(let i=0;i<res.length;i++){
+            if(res[i].time.slice(0,2)==(i+value)){
+                data.push(res[i].sellmoney)
+            }else{
+                var addlength = res[i].time.slice(0,2) - (i+value);
+                for(let i=0;i<addlength;i++){
+                    data.push(0);
+                }
+                value = addlength+value
+                data.push(res[i].sellmoney)
+            }
+        }
         return data
     })
     Promise.all([nows, yets]).then((result) => {
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('echart3'));
-        
         option = {
             tooltip: {
                 trigger: 'axis',
@@ -661,12 +479,12 @@ function nowdayandyesday(){
                     normal: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
-                            color: 'rgba(24, 163, 64, 0.3)'
+                            color: 'rgba(24, 163, 64, 0.2)'
                         }, {
                             offset: 0.8,
-                            color: 'rgba(24, 163, 64, 0)'
+                            color: 'rgba(24, 163, 64, 0.5)'
                         }], false),
-                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                        shadowColor: 'rgba(0, 0, 0, 0.5)',
                         shadowBlur: 10
                     }
                 },
@@ -697,9 +515,9 @@ function nowdayandyesday(){
                             color: 'rgba(39, 122,206, 0.3)'
                         }, {
                             offset: 0.8,
-                            color: 'rgba(39, 122,206, 0)'
+                            color: 'rgba(39, 122,206, 0.5)'
                         }], false),
-                        shadowColor: 'rgba(0, 0, 0, 0.1)',
+                        shadowColor: 'rgba(0, 0, 0, 0.5)',
                         shadowBlur: 10
                     }
                 },
@@ -718,6 +536,176 @@ function nowdayandyesday(){
         window.addEventListener("resize", function () {
             myChart.resize();
         });
+    })
+}
+//总销售数据
+function allkinds(){
+    let all_kinds = requist('all_kinds').then((res)=>{
+        // $('.table1 .tabeldata').remove();
+        //排行渲染
+        for(let i=0;i<res.length;i++){
+            let obj = '<tr class="tabeldata"><td><span>'+(i+1)+'</span></td><td>'+ res[i].name +'</td><td>'+ res[i].销售额 +'<br></td><td>'+ res[i].笔数 +'<br></td></tr>';
+            $('.allkind').append(obj)
+        }
+        //图形渲染 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart2'));
+        let data = [];
+        for(let i=0;i<res.length;i++){
+            let obj = {value:res[i].销售额,name:res[i].name};
+            data.push(obj);
+        }
+        option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{b} : {c} ({d}%)",
+                show:true,
+                triggerOn:'mousemove'
+            },
+            calculable: true,
+            series: [{
+                name: '',
+                color: ['#62c98d', '#2f89cf', '#4cb9cf', '#53b666', '#62c98d', '#205acf', '#c9c862', '#c98b62', '#c962b9', '#c96262'],
+                type: 'pie',
+                //起始角度，支持范围[0, 360]
+                startAngle: 0,
+                //饼图的半径，数组的第一项是内半径，第二项是外半径
+                radius: [51, 100],
+                //支持设置成百分比，设置成百分比时第一项是相对于容器宽度，第二项是相对于容器高度
+                center: ['50%', '45%'],
+                //是否展示成南丁格尔图，通过半径区分数据大小。可选择两种模式：
+                // 'radius' 面积展现数据的百分比，半径展现数据的大小。
+                //  'area' 所有扇区面积相同，仅通过半径展现数据大小
+                roseType: 'radius',
+                //是否启用防止标签重叠策略，默认开启，圆环图这个例子中需要强制所有标签放在中心位置，可以将该值设为 false。
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: true,
+                    },
+                    emphasis: {
+                        show: true
+                    },
+                    alignTo:'edge'
+                },
+                labelLine: {
+                    normal: {
+                        show: true,
+                        length2: 1,
+                    },
+                    emphasis: {
+                        show: true
+                    }
+                },
+                data: data
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+    })
+}
+//今年个月份数据
+function verbmonth(){
+    let data = requist('verbmonth').then((res)=>{
+        console.log(res);
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart4'));
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        lineStyle: {
+                            color: '#57617B'
+                        },
+                        type:'line'
+                    },
+                },
+                "xAxis": [
+                    {
+                        "type": "category",
+                        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                        axisLine: { lineStyle: { color: "rgba(255,255,255,.1)" } },
+                        axisLabel: {
+                            textStyle: { color: "rgba(255,255,255,.6)", fontSize: '14', },
+                        }
+                    },
+                ],
+                "yAxis": [
+                    {
+                        "type": "value",
+                        "name": "销售额（w）",
+                        "min": 0,
+                        "max": 'dataMax',
+                        "mininterval": 1,
+                        "axisLabel": {
+                            "show": true,
+    
+                        },
+                        axisLine: { lineStyle: { color: 'rgba(255,255,255,.4)' } },//左线色
+                        axisLabel: {
+                            textStyle: { color: "rgba(255,255,255,.3)", fontSize: '14', },
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: 'rgba(255,255,255,.1)'
+                            }
+                        }
+                    }
+                ],
+                "grid": {
+                    "top": "10%",
+                    "right": "30",
+                    "bottom": "30",
+                    "left": "30",
+                },
+                "series": [
+                    {
+                        "name": "线上小程序",
+                        "type": "bar",
+                        "data": res.map((item,index) => {return Math.floor(item.销售额/10000)}),
+                        "barWidth": "20",
+                        "itemStyle": {
+                            "normal": {
+                                "color": {
+                                    "type": "linear",
+                                    "x": 0,
+                                    "y": 0,
+                                    "x2": 0,
+                                    "y2": 1,
+                                    "colorStops": [
+                                        {
+                                            "offset": 0,
+                                            "color": "#4579db"
+                                        },
+                                        {
+                                            "offset": 1,
+                                            "color": "#4579db"
+                                        }
+                                    ],
+                                    "globalCoord": false
+                                },
+                                "barBorderRadius": [3, 3, 0, 0],
+                            "shadowBlur": 0.5,
+                            "shadowColor": "rgba(51, 111, 176, 1)",
+                            "shadowOffsetX": 0.5,
+                            "shadowOffsetY": 0.5,
+                            "opacity": 0.75
+                            },
+                            
+                        },
+                        "barGap": "0"
+                    }
+                ]
+            };
+    
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+            window.addEventListener("resize", function () {
+                myChart.resize();
+            });
     })
 }
 function requist(urlname){

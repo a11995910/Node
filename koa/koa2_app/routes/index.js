@@ -24,5 +24,11 @@ router.get('/echarts2', async (ctx, next) => {
   let data = null;
   ctx.body = await selldata.yesterdaySellDate()
 })
+router.get('/all_kinds',async (ctx)=>{
+  ctx.body = await selldata.allKindsDate()
+})
+router.get('/verbmonth',async (ctx)=>{
+  ctx.body = await selldata.verbmonth()
+})
 
 module.exports = router

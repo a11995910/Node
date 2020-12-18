@@ -35,5 +35,10 @@ router.get('/catch/:keywords',async(ctx)=>{
 })
 
 
+//koa中间件
+router.get('/middle',async(ctx,next)=>{
+  ctx.body = '中间件测试'
+})
+
 
 module.exports = router
