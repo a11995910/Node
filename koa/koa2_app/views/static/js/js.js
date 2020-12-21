@@ -3,11 +3,11 @@
 })
 $(function () {
     echarts_1();
-    echarts_2();
     nowdayandyesday();
     allkinds();
     verbmonth();
-    
+    nowdayKinds();
+    top10();
     echarts_5();
     zb1();
     zb2();
@@ -80,109 +80,11 @@ $(function () {
             myChart.resize();
         });
     }
-    function echarts_2() {
-        
-
-        
-    }
     
     
 
     function echarts_5() {
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('echart5'));
-        // 颜色
-        var lightBlue = {
-            type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [{
-                offset: 0,
-                color: 'rgba(41, 121, 255, 1)'
-            }, {
-                offset: 1,
-                color: 'rgba(0, 192, 255, 1)'
-            }],
-            globalCoord: false
-        }
-
-        var option = {
-            tooltip: {
-                show: false
-            },
-            grid: {
-                top: '0%',
-                left: '65',
-                right: '14%',
-                bottom: '0%',
-            },
-            xAxis: {
-                min: 0,
-                max: 100,
-                splitLine: {
-                    show: false
-                },
-                axisTick: {
-                    show: false
-                },
-                axisLine: {
-                    show: false
-                },
-                axisLabel: {
-                    show: false
-                }
-            },
-            yAxis: {
-                data: ['字段名称', '字段名称', '字段名称', '字段名称', '字段名称', '字段名称', '字段名称', '字段名称', '字段名称', '字段名称', '字段名称'],
-                //offset: 15,
-                axisTick: {
-                    show: false
-                },
-                axisLine: {
-                    show: false
-                },
-                axisLabel: {
-                    color: 'rgba(255,255,255,.6)',
-                    fontSize: 14
-                }
-            },
-            series: [{
-                type: 'bar',
-                label: {
-                    show: true,
-                    zlevel: 10000,
-                    position: 'right',
-                    padding: 10,
-                    color: '#49bcf7',
-                    fontSize: 14,
-                    formatter: '{c}%'
-
-                },
-                itemStyle: {
-                    color: '#49bcf7'
-                },
-                barWidth: '15',
-                data: [49, 80, 67, 99, 12, 19, 39, 84, 28, 47, 57, 100],
-                z: 10
-            }, {
-                type: 'bar',
-                barGap: '-100%',
-                itemStyle: {
-                    color: '#fff',
-                    opacity: 0.1
-                },
-                barWidth: '15',
-                data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
-                z: 5
-            }],
-        };
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-        window.addEventListener("resize", function () {
-            myChart.resize();
-        });
+        
     }
 
 
@@ -538,7 +440,7 @@ function nowdayandyesday(){
         });
     })
 }
-//总销售数据
+//总销售各个品类数据
 function allkinds(){
     let all_kinds = requist('all_kinds').then((res)=>{
         // $('.table1 .tabeldata').remove();
@@ -607,10 +509,22 @@ function allkinds(){
         });
     })
 }
+//今日各个品类销售数据
+function nowdayKinds(){
+    let data = requist('nowdayKindsDate').then((res)=>{
+        //排行渲染
+        let sum = 0;
+        for(let i=0;i<res.length;i++){
+            let obj = '<tr class="tabeldata"><td><span>'+(i+1)+'</span></td><td>'+ res[i].name +'</td><td>'+ res[i].销售额 +'<br></td><td>'+ res[i].笔数 +'<br></td></tr>';
+            $('.allkindtoday').append(obj);
+            sum+=res[i].销售额
+        }
+        $('.numtxttoday').text(sum);
+    })
+}
 //今年个月份数据
 function verbmonth(){
     let data = requist('verbmonth').then((res)=>{
-        console.log(res);
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('echart4'));
             option = {
@@ -644,7 +558,7 @@ function verbmonth(){
                             "show": true,
     
                         },
-                        axisLine: { lineStyle: { color: 'rgba(255,255,255,.4)' } },//左线色
+                        axisLine: { lineStyle: { color: 'rgba(255,255,255,.3)' } },//左线色
                         axisLabel: {
                             textStyle: { color: "rgba(255,255,255,.3)", fontSize: '14', },
                         },
@@ -687,6 +601,14 @@ function verbmonth(){
                                     ],
                                     "globalCoord": false
                                 },
+                                    label: {
+                                        show: true, //开启显示
+                                        position: 'top', //在上方显示
+                                        textStyle: { //数值样式
+                                            color: 'white',
+                                            fontSize: 14
+                                        }
+                                    },
                                 "barBorderRadius": [3, 3, 0, 0],
                             "shadowBlur": 0.5,
                             "shadowColor": "rgba(51, 111, 176, 1)",
@@ -706,6 +628,94 @@ function verbmonth(){
             window.addEventListener("resize", function () {
                 myChart.resize();
             });
+    })
+}
+//历史销量top
+function top10(){
+    let data = requist('top10').then((res)=>{
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echart5'));
+        var option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    lineStyle: {
+                        color: '#57617B'
+                    },
+                    type:'line'
+                },
+            },
+            grid: {
+                top: '0%',
+                left: '65',
+                right: '14%',
+                bottom: '0%',
+            },
+            xAxis: {
+                min: 0,
+                max: 100,
+                splitLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                axisLabel: {
+                    show: false
+                }
+            },
+            yAxis: {
+                data: res.map((item,index) => {return item.日期}),
+                //offset: 15,
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                axisLabel: {
+                    color: 'rgba(255,255,255,.6)',
+                    fontSize: 14
+                }
+            },
+            series: [{
+                type: 'bar',
+                label: {
+                    show: true,
+                    zlevel: 10000,
+                    position: 'right',
+                    padding: 10,
+                    color: '#49bcf7',
+                    fontSize: 14,
+                    formatter: '{c}%'
+
+                },
+                itemStyle: {
+                    color: '#49bcf7'
+                },
+                barWidth: '15',
+                data: res.map((item,index) => {return item.销售额}),
+                z: 10
+            }, {
+                type: 'bar',
+                barGap: '-100%',
+                itemStyle: {
+                    color: '#fff',
+                    opacity: 0.1
+                },
+                barWidth: '15',
+                data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+                z: 5
+            }],
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
     })
 }
 function requist(urlname){

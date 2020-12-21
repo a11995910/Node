@@ -122,10 +122,10 @@ let allServices = {
          paid = 1 AND STATUS >= 0 
          AND is_del = 0 
          AND refund_status = 0 
-         and from_unixtime(pay_time,'%Y%m%d')=${new Date().toLocaleDateString()}
+         AND TO_DAYS( FROM_UNIXTIME( pay_time, '%Y-%m-%d' ) ) = TO_DAYS( NOW( ) ) 
         GROUP BY
          name
-        ORDER BY sum( total_price ) desc`
+        ORDER BY sum( total_price ) desc`;
         return allServices.query(_sql)
     },
     //今年各个月份销售数据
@@ -145,6 +145,24 @@ let allServices = {
    and pay_time <> ''
    and left(from_unixtime(pay_time),4) = ${new Date().getFullYear()}
  GROUP BY left(from_unixtime(pay_time),7)`;
+        return allServices.query(_sql)
+    },
+    //历史销量top10
+    top10:function(){
+        let _sql = `SELECT LEFT
+        ( FROM_UNIXTIME( pay_time ), 10 ) 日期,
+        sum( total_price ) 销售额
+    FROM
+        ims_store_order_small 
+    WHERE
+        paid = 1 
+        AND 'status' >= 0 
+        AND pay_time IS NOT NULL 
+        AND refund_status = 0 
+    GROUP BY
+        LEFT ( FROM_UNIXTIME( pay_time ), 10 ) 
+    ORDER BY
+        sum( total_price ) DESC limit 10`;
         return allServices.query(_sql)
     }
 }

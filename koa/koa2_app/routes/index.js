@@ -30,5 +30,11 @@ router.get('/all_kinds',async (ctx)=>{
 router.get('/verbmonth',async (ctx)=>{
   ctx.body = await selldata.verbmonth()
 })
+router.get('/nowdayKindsDate',async(ctx)=>{
+  ctx.body = await selldata.nowdayKindsDate()
+})
+router.get('/top10',async(ctx)=>{
+  ctx.body = await selldata.top10()
+})
 
 module.exports = router
