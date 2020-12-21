@@ -634,6 +634,7 @@ function verbmonth(){
 function top10(){
     let data = requist('top10').then((res)=>{
         // 基于准备好的dom，初始化echarts实例
+        console.log(res,res.map((item,index) => {return item.销售额}));
         var myChart = echarts.init(document.getElementById('echart5'));
         var option = {
             tooltip: {
@@ -653,7 +654,7 @@ function top10(){
             },
             xAxis: {
                 min: 0,
-                max: 100,
+                max: 'auto',
                 splitLine: {
                     show: false
                 },
@@ -690,7 +691,7 @@ function top10(){
                     padding: 10,
                     color: '#49bcf7',
                     fontSize: 14,
-                    formatter: '{c}%'
+                    // formatter: '{c}%'
 
                 },
                 itemStyle: {
@@ -699,16 +700,6 @@ function top10(){
                 barWidth: '15',
                 data: res.map((item,index) => {return item.销售额}),
                 z: 10
-            }, {
-                type: 'bar',
-                barGap: '-100%',
-                itemStyle: {
-                    color: '#fff',
-                    opacity: 0.1
-                },
-                barWidth: '15',
-                data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
-                z: 5
             }],
         };
         // 使用刚指定的配置项和数据显示图表。
