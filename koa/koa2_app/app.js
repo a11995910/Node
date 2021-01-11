@@ -37,6 +37,11 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+// 处理跨域
+app.use(async (ctx, next) => {
+  ctx.set("Access-Control-Allow-Origin", "*")
+  await next()
+})
 
 // routes
 app.use(index.routes(), index.allowedMethods())

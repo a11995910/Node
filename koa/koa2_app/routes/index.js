@@ -36,5 +36,11 @@ router.get('/nowdayKindsDate',async(ctx)=>{
 router.get('/top10',async(ctx)=>{
   ctx.body = await selldata.top10()
 })
+router.get('/location_province',async(ctx)=>{
+  ctx.body = await selldata.location_province()
+})
+router.get('/location_city',async(ctx)=>{
+  ctx.body = await selldata.location_city()
+})
 
 module.exports = router

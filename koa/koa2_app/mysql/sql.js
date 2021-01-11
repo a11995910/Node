@@ -164,6 +164,38 @@ let allServices = {
     ORDER BY
         sum( total_price ) DESC limit 10`;
         return allServices.query(_sql)
+    },
+    //地理位置分布（省）
+    location_province:function(){
+        let _sql = `SELECT
+        province '区域',
+        SUM( total_price ) '销售额'
+    FROM
+        ims_store_order_small a LEFT JOIN ims_user_address b on a.uid = b.uid
+    WHERE
+        paid = 1 
+        AND STATUS >= 0 
+        AND a.is_del = 0 
+        AND refund_status = 0 
+        GROUP BY
+         province ORDER BY SUM( total_price ) desc`;
+        return allServices.query(_sql);
+    },
+    //地理位置分布（市）
+    location_city:function(){
+        let _sql = `SELECT
+        province '区域',
+        SUM( total_price ) '销售额'
+    FROM
+        ims_store_order_small a LEFT JOIN ims_user_address b on a.uid = b.uid
+    WHERE
+        paid = 1 
+        AND STATUS >= 0 
+        AND a.is_del = 0 
+        AND refund_status = 0 
+        GROUP BY
+         province ORDER BY SUM( total_price ) desc`;
+        return allServices.query(_sql);
     }
 }
 module.exports = allServices;
