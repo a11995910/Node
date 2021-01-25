@@ -196,6 +196,50 @@ let allServices = {
         GROUP BY
          province ORDER BY SUM( total_price ) desc`;
         return allServices.query(_sql);
+    },
+    //西安市内外分布
+    xianinout:function(){
+        let _sql = `SELECT
+        case substr(user_address,5,3) when '西安市' then '西安市内' else '西安市外' end 'local',
+        SUM( total_price ) 'sum'
+    FROM
+        ims_store_order_small 
+    WHERE
+        paid = 1 
+        AND STATUS >= 0 
+        AND is_del = 0 
+        AND refund_status = 0 
+      and PERIOD_DIFF(DATE_FORMAT(NOW(),'%Y%m'), DATE_FORMAT(FROM_UNIXTIME(pay_time,'%Y-%m-%d'),'%Y%m')) =2
+    
+        GROUP BY
+        case substr(user_address,5,3) when '西安市' then '市内' else '市外' end `;
+        return allServices.query(_sql);
+    },
+    //纳新
+    naxin:function(){
+        let _sql = `
+        SELECT 
+            Date_format(left(from_unixtime(createtime),10),'%m-%d') AS '日期',
+        CASE 
+        WHEN (adtag = 'shop' or adtag = 'miniprogram') THEN
+        '小程序'
+        WHEN (adtag = 'member') THEN
+        '会员卡页面'
+        WHEN (adtag = 'zjfActivity') THEN
+        '中京坊活动' 
+        ELSE
+        '其他'
+        END as 'name',
+        count(id) 小程序纳新人数 
+        FROM
+        ims_mc_card_members 
+        WHERE
+        TO_DAYS( FROM_UNIXTIME( createtime, '%Y-%m-%d' ) ) = TO_DAYS( NOW( ) )  
+        GROUP BY
+        LEFT ( FROM_UNIXTIME( createtime ), 10 ),
+        adtag
+        order by count(id) desc`
+        return allServices.query(_sql);
     }
 }
 module.exports = allServices;

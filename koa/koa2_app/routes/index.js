@@ -42,5 +42,12 @@ router.get('/location_province',async(ctx)=>{
 router.get('/location_city',async(ctx)=>{
   ctx.body = await selldata.location_city()
 })
+router.get('/xianinout',async(ctx)=>{
+  ctx.body = await selldata.xianinout()
+})
+router.get('/naxin',async(ctx)=>{
+  ctx.body = await selldata.naxin()
+})
+
 
 module.exports = router

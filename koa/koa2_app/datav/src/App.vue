@@ -26,8 +26,10 @@
             </dv-border-box-10>
           </div>
           <div class="centercell">
+            <dv-border-box-8 style="text-align: center;padding:10px;">
               <div>市外订单占比</div>
-              <dv-decoration-9 style="max-width:300px;height:170px;font-size:30px;font-weight:600;">33%</dv-decoration-9>
+              <dv-decoration-9 style="max-width:300px;height:170px;font-size:30px;font-weight:600;">{{xianinoutdata}}</dv-decoration-9>
+            </dv-border-box-8>
           </div>
         </div>
         <!-- echarts -->
@@ -96,6 +98,7 @@ export default {
         {name:'总销售额',value:{number: [0],toFixed: 2,content: '{nt}元',style:{fontSize:35}}},
         {name:'总销售额',value:{number: [0],toFixed: 2,content: '{nt}元',style:{fontSize:35}}},
       ],
+      xianinoutdata:0,
       nowdayKindsdata:{},
       config:{
         header: ['下单时间', '品名', '金额','会员id'],
@@ -150,6 +153,8 @@ export default {
       this.nowdayKinds();
       this.all_kinds();
       this.nowyear();
+      this.xianinout();
+      this.naixn();
       setTimeout(()=>{this.reloading()},60000)
     },
     // 今日数据
@@ -218,14 +223,15 @@ export default {
             data: 'value',
             nameTextStyle:{
               fill: '#fff',
-              fontSize: 10
+              fontSize: 17
             },
             min:0,
             axisLine:{
               show:true,
               style:{
                 stroke: 'rgba(4,33,139,.68)',
-                lineWidth: 1
+                lineWidth: 1,
+              fontSize: 17
               }
             },
             axisTick:{
@@ -239,7 +245,7 @@ export default {
               show:true,
               style:{
                 fill: 'rgba(255,255,255,.74)',
-                fontSize: 10
+                fontSize: 17
               },
               formatter:{value}
             },
@@ -247,7 +253,8 @@ export default {
               show:true,
               style:{
                 stroke: 'rgba(4,33,139,.68)',
-                lineWidth: 1
+                lineWidth: 1,
+              fontSize: 17
               }
             }
           },
@@ -326,7 +333,6 @@ export default {
     all_kinds:function(){
       var that = this;
       that.axios.get('http://localhost:3002/all_kinds').then(res=>{
-        console.log(res.data);
         let data = [];
         let count = 0;
         for(let i=0;i<res.data.length;i++){
@@ -447,6 +453,21 @@ export default {
         
         };
         that.$set(that.basedata,1, {name:'当月销售额',value:{number: [res.data[res.data.length-1].销售额],toFixed: 2,content: '{nt}元',style:{fontSize:35}}})
+      })
+    },
+    //  西安内外销量
+    xianinout:function(){
+      var that = this;
+      that.axios.get('http://localhost:3002/xianinout').then(res=>{
+        let i = Math.floor(res.data[1].sum/(res.data[0].sum+res.data[1].sum)*100)+'%'
+        that.xianinoutdata = i;
+      })
+    },
+    //纳新
+    naixn:function(){
+      var that = this;
+      that.axios.get('http://localhost:3002/naixn').then(res=>{
+        console.log(res.data)
       })
     }
   }
