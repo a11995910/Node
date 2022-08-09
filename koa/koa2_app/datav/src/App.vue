@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <dv-full-screen-container style="background: #000d4a url(http://localhost:3002/static/images/bg.jpg) no-repeat;background-size:cover;">
+    <dv-full-screen-container style="background: #000d4a url(http://localhost:3002/static/images/bg.jpg) no-repeat;background-size:cover;position: relative;">
       <!-- 初始化loading -->
       <dv-loading v-if="loading" class="white">初始化中....</dv-loading>
       <!-- 主页 -->
@@ -481,7 +481,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: rgb(26 39 101);
-  margin-top: 60px;
 }
 .white{
   color:white
