@@ -9,6 +9,7 @@ const logger = require('koa-logger')
 //路由引入
 const index = require('./routes/index')
 const users = require('./routes/users')
+const market = require('./routes/market')
 
 // error handler
 onerror(app)
@@ -36,10 +37,16 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+// 处理跨域
+app.use(async (ctx, next) => {
+  ctx.set("Access-Control-Allow-Origin", "*")
+  await next()
+})
 
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(market.routes(), market.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

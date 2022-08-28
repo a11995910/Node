@@ -712,7 +712,7 @@ function top10(){
 function requist(urlname){
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '/'+urlname,
+            url: '/market/'+urlname,
             type: 'get',
             dataType: 'json',
             success: function (res) {

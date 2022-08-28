@@ -1,11 +1,10 @@
 const sql_data = {
     database:{
-        HOST : 'bj-cdb-ev6kl5k4.sql.tencentcdb.com',
-        PORT : 61884,
+        HOST : 'bj-cdb-9yrb4t2a.sql.tencentcdb.com',
+        PORT : 60266,
         USERNAME : 'root',
         PASSWORD : 'Saga@123456',
-        DATABASE : 'shop',
-        // CHARSET : 'utf-8'
+        DATABASE : 'shop'
     }
 }
 module.exports = sql_data;

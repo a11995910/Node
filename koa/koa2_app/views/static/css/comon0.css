@@ -39,8 +39,8 @@ a:hover{ color:#06c; text-decoration: none!important}
 .mainbox{ padding:10px 20px 0 20px;}
 .mainbox>ul{ margin-left:-.4rem; margin-right:-.4rem;}
 .mainbox>ul>li{ float: left; padding: 0 .4rem}
-.mainbox>ul>li{ width: 24%}
-.mainbox>ul>li:nth-child(2){ width: 52%}
+.mainbox>ul>li{ width: 100%}
+.mainbox>ul>li:nth-child(2){ width: 100%}
 
 .boxall{ padding:15px;  background: rgba(0,0,0,.2); position: relative; margin-bottom:15px;; z-index: 10;}
 .alltitle{ font-size:18px; color:#fff; position: relative; padding-left: 12px;margin-bottom: 10px;}
